@@ -29,6 +29,7 @@
 				
 				var modal = document.getElementById('modal_div');
 				var modalImage = document.getElementById('modal_image');
+				var sampleImage = document.getElementById('sample_image');
 				var modalClose = document.getElementsByClassName('modal_close')[0];
 				
 				modalClose.onclick = function() {
@@ -66,7 +67,7 @@
 					fillColor: '#FF0000',
 					fillOpacity: 0.3,
 					map: map,
-					center: {lat: 63.5300, lng: -19.5126 },
+					center: {lat: 63.5310, lng: -19.5124 },
 					radius: 20
 				});
 				
@@ -99,6 +100,6 @@
 			<div id="modal_caption"></div>
 		</div>
 		
-		<img class="hidden_image" src="IMG_3364.JPG">
+		<img class="hidden_image" id="sample_image" src="IMG_3361.JPG">
 	</body>
 </html>
