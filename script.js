@@ -55,8 +55,72 @@ function buildFieldOfView(center, radius, dir, angle) {
 		newPoint = new google.maps.LatLng(newLat, newLng);
 		points.push(newPoint);
 	}
-	
+
 	return points;
+}
+
+function addImages(map, fieldOfView, modal, modalImage, imageList) {
+	var allImages = document.getElementsByClassName('hidden_image');
+	//console.log(allImages);
+	
+	for (var i = 0; i < allImages.length; ++i) {
+		var photo = allImages.item(i);
+		
+		var latitude = parseFloat(photo.getAttribute('data-lat'));
+		var longitude = parseFloat(photo.getAttribute('data-lng'));
+		
+		var marker = new google.maps.Circle({
+			strokeColor: '#FF0000',
+			strokeOpacity: 0.8,
+			strokeWeight: 2,
+			fillColor: '#FF0000',
+			fillOpacity: 0.3,
+			map: map,
+			center: {lat: latitude, lng: longitude },
+			radius: circleSize(map.getZoom()),
+			zIndex: 5
+		});
+		
+		google.maps.event.addListener(marker, 'mouseover', (function (marker, photo, i) {
+			return function () {
+				fieldOfView.setOptions({
+					visible: true
+				});
+				
+				var heading = parseFloat(photo.getAttribute('data-head'));
+				var fov = parseFloat(photo.getAttribute('data-fov'));
+				
+				fieldOfView.setPath(buildFieldOfView(
+					marker.getCenter(),
+					circleSize(map.getZoom()) * 10,
+					heading,
+					fov));
+			}
+		})(marker, photo, i));
+		
+		google.maps.event.addListener(marker, 'mouseout', (function (marker, i) {
+			return function () {
+				marker.setOptions({
+					fillColor: '#FF0000'
+				});
+				
+				fieldOfView.setOptions({
+					visible: false
+				});
+				
+				fieldOfView.setPath(Array());
+			}
+		})(marker, i));
+		
+		google.maps.event.addListener(marker, 'click', (function (photo, i) {
+			return function () {
+				modal.style.display = "block";
+				modalImage.src = photo.src;
+			}
+		})(photo, i));
+
+		imageList.push(marker);
+	}
 }
 
 function initMap() {
@@ -68,7 +132,6 @@ function initMap() {
 	
 	var modal = document.getElementById('modal_div');
 	var modalImage = document.getElementById('modal_image');
-	var sampleImage = document.getElementById('sample_image');
 	var modalClose = document.getElementsByClassName('modal_close')[0];
 	
 	modalClose.onclick = function() {
@@ -98,64 +161,16 @@ function initMap() {
 		{ lat: 63.6787, lng: -19.4720 }
 	];
 
-	/*var path = new google.maps.Polyline({
-		path: coords,
-		geodesic: true,
-		strokeColor: '#FF0000',
-		strokeOpacity: 1.0,
-		strokeWeight: 2
-	});
-
-	path.setMap(map);*/
-
 	map.data.add({geometry: new google.maps.Data.LineString(coords)});
 	
-	var photo = new google.maps.Circle({
-		strokeColor: '#FF0000',
-		strokeOpacity: 0.8,
-		strokeWeight: 2,
-		fillColor: '#FF0000',
-		fillOpacity: 0.3,
-		map: map,
-		center: {lat: 63.5310, lng: -19.5124 },
-		radius: circleSize(map.getZoom()),
-		zIndex: 5
-	});
-	
-	photo.addListener('mouseover', function() {
-		fieldOfView.setOptions({
-			visible: true
-		});
-		
-		fieldOfView.setPath(buildFieldOfView(
-			photo.getCenter(),
-			circleSize(map.getZoom()) * 10,
-			-25.0,
-			30.0));
-	});
-	
-	photo.addListener('mouseout', function() {
-		photo.setOptions({
-			fillColor: '#FF0000'
-		});
-		
-		fieldOfView.setOptions({
-			visible: false
-		});
-		
-		fieldOfView.setPath(Array());
-	});
-	
-	photo.addListener('click', function() {
-		modal.style.display = "block";
-		modalImage.src = sampleImage.src;
-	});
+	var allImages = [];
+	addImages(map, fieldOfView, modal, modalImage, allImages);
 	
 	map.addListener('zoom_changed', function() {
-		photo.setOptions({
-			radius: circleSize(map.getZoom())
-		});
-		console.log(map.getZoom());
-		console.log(circleSize(map.getZoom()));
+		for (var i = 0; i < allImages.length; ++i) {
+			allImages[i].setOptions({
+				radius: circleSize(map.getZoom())
+			});
+		}
 	});
 }
