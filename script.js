@@ -125,9 +125,9 @@ function addImages(map, fieldOfView, modal, modalImage, imageList) {
 
 function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
-		zoom: 15,
-		center: {lat: 63.5294, lng: -19.5126},
-		mapTypeId: 'terrain'
+		zoom: 12,
+		center: {lat: 63.6485, lng: -19.5126},
+		mapTypeId: 'hybrid'
 	});
 	
 	var modal = document.getElementById('modal_div');
@@ -149,19 +149,7 @@ function initMap() {
 		zIndex: 2
 	});
 
-	var coords = [
-		{ lat: 63.5294, lng: -19.5126 },
-		{ lat: 63.5449, lng: -19.5003 },
-		{ lat: 63.5624, lng: -19.4870 },
-		{ lat: 63.5770, lng: -19.4466 },
-		{ lat: 63.6018, lng: -19.4466 },
-		{ lat: 63.6368, lng: -19.4436 },
-		{ lat: 63.6520, lng: -19.4291 },
-		{ lat: 63.6760, lng: -19.4605 },
-		{ lat: 63.6787, lng: -19.4720 }
-	];
-
-	map.data.add({geometry: new google.maps.Data.LineString(coords)});
+	map.data.add({geometry: new google.maps.Data.LineString(hikeCoords)});
 	
 	var allImages = [];
 	addImages(map, fieldOfView, modal, modalImage, allImages);
@@ -172,5 +160,11 @@ function initMap() {
 				radius: circleSize(map.getZoom())
 			});
 		}
+	});
+	
+	// Utility: right click prints 
+	map.addListener('rightclick', function(e) {
+		console.log(e.latLng.lat());
+		console.log(e.latLng.lng());
 	});
 }
