@@ -126,7 +126,7 @@ function addImages(map, fieldOfView, modal, modalImage, imageList) {
 function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
 		zoom: 12,
-		center: {lat: 63.6485, lng: -19.5126},
+		center: {lat: 63.9531, lng: -19.1469},
 		mapTypeId: 'hybrid'
 	});
 	
