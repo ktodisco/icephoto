@@ -1,4 +1,4 @@
-// At the equator, each degree of longitude is equal to 111.3199 km.
+// At the equator, each degree of longitude is equal to 111319.9 m.
 const kOneDegreeMeters = 111319.9;
 var map;
 var fieldOfView;
@@ -59,9 +59,17 @@ function buildFieldOfView(center, radius, dir, angle) {
 	return points;
 }
 
+function rotateImage(modalImage, degrees) {
+	var rotationString = "rotate(" + degrees + "deg)";
+	
+	// Support chrome, firefox, and IE.
+	modalImage.style.webkitTransform = rotationString;
+	modalImage.style.mozTransform = rotationString;
+	modalImage.style.msTransform = rotationString;
+}
+
 function addImages(map, fieldOfView, modal, modalImage, imageList) {
 	var allImages = document.getElementsByClassName('hidden_image');
-	//console.log(allImages);
 	
 	for (var i = 0; i < allImages.length; ++i) {
 		var photo = allImages.item(i);
@@ -116,6 +124,9 @@ function addImages(map, fieldOfView, modal, modalImage, imageList) {
 			return function () {
 				modal.style.display = "block";
 				modalImage.src = photo.src;
+				
+				var rotation = photo.getAttribute('data-rotate');
+				rotateImage(modalImage, rotation);
 			}
 		})(photo, i));
 
@@ -138,6 +149,8 @@ function initMap() {
 		modal.style.display = "none";
 	}
 	
+	// One one field-of-view indicator is ever seen at a time, so create it once
+	// here.
 	fieldOfView = new google.maps.Polygon({
 		strokeColor: '#000000',
 		strokeWeight: 2,
@@ -149,11 +162,14 @@ function initMap() {
 		zIndex: 2
 	});
 
+	// Populate the data to highlight the trail.
+	// Coordinates are in coords.js.
 	map.data.add({geometry: new google.maps.Data.LineString(hikeCoords)});
 	
 	var allImages = [];
 	addImages(map, fieldOfView, modal, modalImage, allImages);
 	
+	// Change the size of the photo markers depending on the zoom level.
 	map.addListener('zoom_changed', function() {
 		for (var i = 0; i < allImages.length; ++i) {
 			allImages[i].setOptions({
