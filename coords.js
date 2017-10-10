@@ -1,6 +1,6 @@
 // Coordinates obtained from LaugavegurAndFimmvorduhalsV1.kml.
 // https://www.gpsies.com/map.do;jsessionid=970A06DF32FF00BFBCD1A2573DF57356.fe2?fileId=pywxgugnpckdvohw&language=en
-var hikeCoords = [
+var kHikeCoords = [
 	{ lng: -19.5131262, lat: 63.52991090 },
 	{ lng: -19.5130995, lat: 63.52990520 },
 	{ lng: -19.5130096, lat: 63.52991460 },

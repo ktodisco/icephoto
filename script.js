@@ -1,5 +1,12 @@
 // At the equator, each degree of longitude is equal to 111319.9 m.
 const kOneDegreeMeters = 111319.9;
+
+// Global colors.
+const kMarkerColor = '#0000FF';
+const kFovColor = '#1010FF';
+const kTrailColor = '#000000';
+
+// Globals.
 var map;
 var fieldOfView;
 
@@ -21,7 +28,7 @@ function metersToLongitude(meters, lat) {
 
 function circleSize(zoomLevel) {
 	// TODO: At zoom level 20+ this will be NaN.
-	return Math.pow(6, Math.sqrt(22 - zoomLevel - 3));
+	return Math.pow(7, Math.sqrt(22 - zoomLevel - 3));
 }
 
 function rotatePoint(point, degrees) {
@@ -78,11 +85,11 @@ function addImages(map, fieldOfView, modal, modalImage, imageList) {
 		var longitude = parseFloat(photo.getAttribute('data-lng'));
 		
 		var marker = new google.maps.Circle({
-			strokeColor: '#FF0000',
-			strokeOpacity: 0.8,
+			strokeColor: kMarkerColor,
+			strokeOpacity: 0.3,
 			strokeWeight: 2,
-			fillColor: '#FF0000',
-			fillOpacity: 0.3,
+			fillColor: kMarkerColor,
+			fillOpacity: 0.8,
 			map: map,
 			center: {lat: latitude, lng: longitude },
 			radius: circleSize(map.getZoom()),
@@ -100,7 +107,7 @@ function addImages(map, fieldOfView, modal, modalImage, imageList) {
 				
 				fieldOfView.setPath(buildFieldOfView(
 					marker.getCenter(),
-					circleSize(map.getZoom()) * 10,
+					circleSize(map.getZoom()) * 20,
 					heading,
 					fov));
 			}
@@ -109,7 +116,7 @@ function addImages(map, fieldOfView, modal, modalImage, imageList) {
 		google.maps.event.addListener(marker, 'mouseout', (function (marker, i) {
 			return function () {
 				marker.setOptions({
-					fillColor: '#FF0000'
+					fillColor: kMarkerColor
 				});
 				
 				fieldOfView.setOptions({
@@ -152,10 +159,10 @@ function initMap() {
 	// One one field-of-view indicator is ever seen at a time, so create it once
 	// here.
 	fieldOfView = new google.maps.Polygon({
-		strokeColor: '#000000',
-		strokeWeight: 2,
+		strokeColor: kFovColor,
+		strokeWeight: 0,
 		strokeOpacity: 0.8,
-		fillColor: '#000000',
+		fillColor: kFovColor,
 		fillOpacity: 0.3,
 		map: map,
 		visible: false,
@@ -164,7 +171,14 @@ function initMap() {
 
 	// Populate the data to highlight the trail.
 	// Coordinates are in coords.js.
-	map.data.add({geometry: new google.maps.Data.LineString(hikeCoords)});
+	var trail = new google.maps.Polyline({
+		path: kHikeCoords,
+		geodesic: true,
+		strokeColor: kTrailColor,
+		strokeWeight: 3,
+		strokeOpacity: 1,
+		map: map
+	});
 	
 	var allImages = [];
 	addImages(map, fieldOfView, modal, modalImage, allImages);
