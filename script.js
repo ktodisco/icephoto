@@ -133,7 +133,11 @@ function addImages(map, fieldOfView, modal, modalImage, imageList) {
 				modalImage.src = photo.src;
 				
 				var rotation = photo.getAttribute('data-rotate');
+				var fov = parseFloat(photo.getAttribute('data-fov'));
 				rotateImage(modalImage, rotation);
+				
+				// Size the content appropriately.
+				modalImage.style.maxWidth = fov < 100 ? '800px' : '1200px';
 			}
 		})(photo, i));
 
@@ -143,8 +147,8 @@ function addImages(map, fieldOfView, modal, modalImage, imageList) {
 
 function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
-		zoom: 12,
-		center: {lat: 63.9531, lng: -19.1469},
+		zoom: 9,
+		center: {lat: 63.7560, lng: -19.2971},
 		mapTypeId: 'hybrid'
 	});
 	
@@ -190,11 +194,5 @@ function initMap() {
 				radius: circleSize(map.getZoom())
 			});
 		}
-	});
-	
-	// Utility: right click prints 
-	map.addListener('rightclick', function(e) {
-		console.log(e.latLng.lat());
-		console.log(e.latLng.lng());
 	});
 }
