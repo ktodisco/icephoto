@@ -28,8 +28,23 @@
 		<div id="modal_div" class="modal">
 			<span class="modal_close" onclick="document.getElementById('modal_div').style.display='none'">&times;</span>
 			<img class="modal_content" id="modal_image">
-			<div id="modal_caption"></div>
+			<div class="modal_text" id="modal_caption">
+				<p>In late August I went trekking through the south of Iceland.  Over the course of four days, myself and two others covered
+				50 miles of terrain, climbed over 10,000 feet and descended 8,000, saw beautiful and diverse landscapes, and
+				made memories that will last a lifetime.  Oh, and we took a bunch of photos.<br><br>
+				This interactive photo map gives you a tour of our hike, starting in the south at the waterfall Skogafoss,
+				snaking northward, ending in Landmannalauger.<br><br>
+				Iceland truly is an amazing country.  I can't wait to go back.</p>
+			</div>
 		</div>
+		
+		<div id="info_div" class="info">
+			<a href="#">
+				<img src="info_icon.png" class="info_icon" onClick="openInfo()">
+			</a>
+		</div>
+		
+		<img class="info_image" src="images/IMG_3443.JPG">
 		
 		<!-- A better solution would be to read EXIF data via Javascript, but that's more complicated
 		than I want to get with this project. -->

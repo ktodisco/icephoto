@@ -19,6 +19,16 @@
 	max-width: 800px;
 }
 
+.modal_text {
+	display: none;
+	margin: auto;
+	width: 50%;
+	text-align: center;
+	font-family: sans-serif;
+	font-size: 18px;
+	color: #FFFFFF;
+}
+
 .modal_close {
 	position: absolute;
 	top: 15px;
@@ -34,6 +44,21 @@
 	color: #BBB;
 	text-decoration: none;
 	cursor: pointer;
+}
+
+.info {
+	position: fixed;
+	bottom: 50px;
+	left: 20px;
+}
+
+.info_icon {
+	width: 50px;
+	height: 50px;
+}
+
+.info_image {
+	display: none;
 }
 
 .hidden_image {

@@ -154,10 +154,12 @@ function initMap() {
 	
 	var modal = document.getElementById('modal_div');
 	var modalImage = document.getElementById('modal_image');
+	var modalText = document.getElementById('modal_caption');
 	var modalClose = document.getElementsByClassName('modal_close')[0];
 	
 	modalClose.onclick = function() {
 		modal.style.display = "none";
+		modalText.style.display = "none";
 	}
 	
 	// One one field-of-view indicator is ever seen at a time, so create it once
@@ -195,4 +197,18 @@ function initMap() {
 			});
 		}
 	});
+}
+
+function openInfo() {
+	var modalText = document.getElementById('modal_caption');
+	var modal = document.getElementById('modal_div');
+	var modalImage = document.getElementById('modal_image');
+	
+	var infoImage = document.getElementsByClassName('info_image')[0];
+	
+	modal.style.display = "block";
+	modalText.style.display = "block";
+	modalImage.style.display = "block";
+	
+	modalImage.src = infoImage.src;
 }
