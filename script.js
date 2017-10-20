@@ -131,6 +131,7 @@ function addImages(map, fieldOfView, modal, modalImage, imageList) {
 			return function () {
 				modal.style.display = "block";
 				modalImage.src = photo.src;
+				modalImage.style.maxWidth = "800px";
 				
 				var rotation = photo.getAttribute('data-rotate');
 				var fov = parseFloat(photo.getAttribute('data-fov'));
@@ -209,6 +210,7 @@ function openInfo() {
 	modal.style.display = "block";
 	modalText.style.display = "block";
 	modalImage.style.display = "block";
+	modalImage.style.maxWidth = "500px";
 	
 	modalImage.src = infoImage.src;
 }
