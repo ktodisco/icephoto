@@ -213,4 +213,5 @@ function openInfo() {
 	modalImage.style.maxWidth = "500px";
 	
 	modalImage.src = infoImage.src;
+	rotateImage(modalImage, 0);
 }
