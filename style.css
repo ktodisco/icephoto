@@ -1,3 +1,15 @@
+/* Always set the map height explicitly to define the size of the div
+* element that contains the map. */
+#map {
+	height: 100%;
+}
+/* Optional: Makes the sample page fill the window. */
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
 .modal {
 	display: none;
 	position: fixed;
@@ -39,8 +51,8 @@
 	transition: 0.3s;
 }
 
-.close:hover,
-.close:focus {
+.modal_close:hover,
+.modal_close:focus {
 	color: #BBB;
 	text-decoration: none;
 	cursor: pointer;
@@ -55,6 +67,11 @@
 .info_icon {
 	width: 50px;
 	height: 50px;
+}
+
+.info_icon:hover,
+.info_icon:focus {
+	cursor: pointer;
 }
 
 .info_image {

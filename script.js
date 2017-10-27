@@ -9,6 +9,8 @@ const kTrailColor = '#000000';
 // Globals.
 var map;
 var fieldOfView;
+var modalContent;
+var infoTimer;
 
 function degreesToRadians(degrees) {
 	return degrees * (Math.PI / 180);
@@ -77,6 +79,7 @@ function rotateImage(modalImage, degrees) {
 
 function addImages(map, fieldOfView, modal, modalImage, imageList) {
 	var allImages = document.getElementsByClassName('hidden_image');
+	var modalText = document.getElementById('modal_caption');
 	
 	for (var i = 0; i < allImages.length; ++i) {
 		var photo = allImages.item(i);
@@ -132,6 +135,7 @@ function addImages(map, fieldOfView, modal, modalImage, imageList) {
 				modal.style.display = "block";
 				modalImage.src = photo.src;
 				modalImage.style.maxWidth = "800px";
+				modalText.style.display = "none";
 				
 				var rotation = photo.getAttribute('data-rotate');
 				var fov = parseFloat(photo.getAttribute('data-fov'));
@@ -153,14 +157,13 @@ function initMap() {
 		mapTypeId: 'hybrid'
 	});
 	
-	var modal = document.getElementById('modal_div');
+	modalContent = document.getElementById('modal_div');
 	var modalImage = document.getElementById('modal_image');
 	var modalText = document.getElementById('modal_caption');
 	var modalClose = document.getElementsByClassName('modal_close')[0];
 	
 	modalClose.onclick = function() {
-		modal.style.display = "none";
-		modalText.style.display = "none";
+		closeModal();
 	}
 	
 	// One one field-of-view indicator is ever seen at a time, so create it once
@@ -188,7 +191,7 @@ function initMap() {
 	});
 	
 	var allImages = [];
-	addImages(map, fieldOfView, modal, modalImage, allImages);
+	addImages(map, fieldOfView, modalContent, modalImage, allImages);
 	
 	// Change the size of the photo markers depending on the zoom level.
 	map.addListener('zoom_changed', function() {
@@ -198,6 +201,14 @@ function initMap() {
 			});
 		}
 	});
+	
+	// Pop up the info pane by default, and close it after a decent amount of time.
+	openInfo();
+	
+	infoTimer = window.setInterval(function() {
+		closeModal();
+		killInfoTimer();
+	}, 60000);
 }
 
 function openInfo() {
@@ -214,4 +225,12 @@ function openInfo() {
 	
 	modalImage.src = infoImage.src;
 	rotateImage(modalImage, 0);
+}
+
+function closeModal() {
+	modalContent.style.display = "none";
+}
+
+function killInfoTimer() {
+	window.clearInterval(infoTimer);
 }
