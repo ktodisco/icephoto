@@ -164,6 +164,7 @@ function initMap() {
 	
 	modalClose.onclick = function() {
 		closeModal();
+		killInfoTimer();
 	}
 	
 	// One one field-of-view indicator is ever seen at a time, so create it once
