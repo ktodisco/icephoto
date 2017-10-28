@@ -133,7 +133,7 @@ function addImages(map, fieldOfView, modal, modalImage, imageList) {
 		google.maps.event.addListener(marker, 'click', (function (photo, i) {
 			return function () {
 				modal.style.display = "block";
-				modalImage.src = photo.src;
+				modalImage.src = photo.getAttribute('data-src');
 				modalImage.style.maxWidth = "800px";
 				modalText.style.display = "none";
 				
